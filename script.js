@@ -1,0 +1,184 @@
+'use strict';
+
+// ── Config ─────────────────────────────────────────────────────────────────
+const MODEL_URL   = './Model/model.json';
+const METADATA_URL = './Model/metadata.json';
+const MAX_BYTES   = 10 * 1024 * 1024; // 10 MB
+const ACCEPT      = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+
+// ── State ───────────────────────────────────────────────────────────────────
+let model        = null;
+let modelReady   = false;
+let classifying  = false;
+
+// ── DOM refs ─────────────────────────────────────────────────────────────────
+const el = (id) => document.getElementById(id);
+const uploadZone      = el('upload-zone');
+const fileInput       = el('file-input');
+const previewSection  = el('preview-section');
+const previewImage    = el('preview-image');
+const imgPlaceholder  = el('img-placeholder');
+const removeBtn       = el('remove-btn');
+const errorMsg        = el('error-msg');
+const classifyBtn     = el('classify-btn');
+const loadingSection  = el('loading-section');
+const loadingText     = el('loading-text');
+const resultSection   = el('result-section');
+const resultClass     = el('result-class');
+const resultConf      = el('result-conf');
+const resetBtn        = el('reset-btn');
+const globalError     = el('global-error');
+const globalErrorText = el('global-error-text');
+const modelStatus     = el('model-status');
+
+// ── Model loading ────────────────────────────────────────────────────────────
+async function loadModel() {
+  setStatus('Loading model…', '');
+  try {
+    if (typeof tmImage === 'undefined') {
+      throw new Error('Teachable Machine library not loaded. Check your internet connection.');
+    }
+    model = await tmImage.load(MODEL_URL, METADATA_URL);
+    modelReady = true;
+    setStatus('Model ready', 'ready');
+    console.log('[SmartWaste] Model loaded. Classes:', model.getTotalClasses());
+  } catch (err) {
+    modelReady = false;
+    setStatus('Model failed to load', 'error');
+    showGlobalError(
+      'Could not load the AI model. Make sure you are serving the project through a local HTTP server ' +
+      '(e.g. VS Code Live Server or "python -m http.server") and that the Model/ folder is present.'
+    );
+    console.error('[SmartWaste] Model load error:', err);
+  }
+}
+
+function setStatus(text, cls) {
+  modelStatus.textContent = text;
+  modelStatus.className   = 'model-status ' + cls;
+}
+
+// ── File handling ─────────────────────────────────────────────────────────────
+function handleFile(file) {
+  if (!file) return;
+  if (!ACCEPT.includes(file.type)) {
+    return showInlineError('Please upload a JPG, PNG, or WEBP image.');
+  }
+  if (file.size > MAX_BYTES) {
+    return showInlineError(`File too large (${(file.size / 1e6).toFixed(1)} MB). Max 10 MB.`);
+  }
+  hideInlineError();
+  showPreview(file);
+}
+
+function showPreview(file) {
+  const url = URL.createObjectURL(file);
+  previewImage.onload  = () => URL.revokeObjectURL(url);
+  previewImage.onerror = () => { showInlineError('Could not display image.'); URL.revokeObjectURL(url); };
+  previewImage.src = url;
+  previewImage.alt = file.name;
+  // Show the image, hide the placeholder
+  previewImage.hidden  = false;
+  imgPlaceholder.hidden = true;
+  showState('preview');
+}
+
+// ── Classification ────────────────────────────────────────────────────────────
+async function classify() {
+  if (classifying) return;
+  if (!modelReady) return showInlineError('Model is not ready yet. Please wait.');
+  if (!previewImage.complete || previewImage.naturalWidth === 0) {
+    return showInlineError('Image not fully loaded. Try again in a moment.');
+  }
+
+  classifying = true;
+  classifyBtn.disabled = true;
+  loadingText.textContent = 'Analyzing image…';
+  showState('loading');
+
+  try {
+    const preds = await model.predict(previewImage);
+    console.log('[SmartWaste] Predictions:', preds);
+    const best  = preds.reduce((a, b) => a.probability > b.probability ? a : b);
+    const pct   = (best.probability * 100).toFixed(1);
+
+    resultClass.textContent = best.className;
+    resultConf.textContent  = `Confidence: ${pct}%`;
+    showState('result');
+  } catch (err) {
+    console.error('[SmartWaste] Classification error:', err);
+    showInlineError('Classification failed. See browser console for details.');
+    showState('preview');
+  } finally {
+    classifying = false;
+    classifyBtn.disabled = false;
+  }
+}
+
+// ── Reset ─────────────────────────────────────────────────────────────────────
+function reset() {
+  previewImage.src    = '';
+  previewImage.alt    = '';
+  previewImage.hidden = true;
+  imgPlaceholder.hidden = false;
+  fileInput.value  = '';
+  hideInlineError();
+  classifying = false;
+  classifyBtn.disabled = false;
+  showState('upload');
+}
+
+// ── UI state ──────────────────────────────────────────────────────────────────
+function showState(state) {
+  uploadZone.hidden     = state !== 'upload';
+  
+  // Keep the preview section visible when showing results so the user can see what was classified
+  previewSection.hidden = (state !== 'preview' && state !== 'result');
+  
+  // Hide the Classify button while loading or showing results
+  classifyBtn.hidden    = (state === 'loading' || state === 'result');
+  
+  loadingSection.hidden = state !== 'loading';
+  resultSection.hidden  = state !== 'result';
+}
+
+// ── Errors ────────────────────────────────────────────────────────────────────
+function showInlineError(msg) { errorMsg.textContent = msg; errorMsg.hidden = false; }
+function hideInlineError()    { errorMsg.textContent = ''; errorMsg.hidden = true; }
+function showGlobalError(msg) { globalErrorText.textContent = msg; globalError.hidden = false; }
+
+// ── Events ────────────────────────────────────────────────────────────────────
+fileInput.addEventListener('change', (e) => {
+  if (e.target.files[0]) handleFile(e.target.files[0]);
+});
+
+// Click on zone (but not the label/button inside it) → open file picker
+uploadZone.addEventListener('click', (e) => {
+  if (e.target.closest('label') || e.target.tagName === 'LABEL') return;
+  fileInput.click();
+});
+uploadZone.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); }
+});
+
+// Drag and drop
+uploadZone.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  uploadZone.classList.add('drag-over');
+});
+uploadZone.addEventListener('dragleave', (e) => {
+  if (!uploadZone.contains(e.relatedTarget)) uploadZone.classList.remove('drag-over');
+});
+uploadZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  uploadZone.classList.remove('drag-over');
+  if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+});
+
+removeBtn.addEventListener('click', reset);
+classifyBtn.addEventListener('click', classify);
+resetBtn.addEventListener('click', reset);
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+showState('upload');
+loadModel();

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartWaste AI — Waste Classification</title>
+  <meta name="description" content="AI-powered waste classifier. Upload an image to identify Plastic, Paper, or Metal — all in your browser." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── NAV ─────────────────────────────── -->
+  <header class="nav">
+    <div class="nav-inner">
+      <span class="nav-logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" aria-hidden="true">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+          <path d="M8 12a4 4 0 0 1 8 0"/>
+          <path d="M7 17.5 5 21h5.5"/>
+          <path d="M12 8v4l2.5 1.5"/>
+        </svg>
+        SmartWaste AI
+      </span>
+      <nav aria-label="Site navigation">
+        <a href="#classifier">Try it</a>
+        <a href="#how">How it works</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ── HERO ────────────────────────────── -->
+  <section class="hero" aria-label="Introduction">
+    <div class="hero-inner">
+      <div class="hero-tag">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        TensorFlow.js · Google Teachable Machine
+      </div>
+      <h1>AI-powered<br /><span class="green">waste classification</span></h1>
+      <p class="hero-sub">
+        Upload a photo of any waste item and the model instantly identifies it as
+        <strong>Plastic</strong>, <strong>Paper</strong>, or <strong>Metal</strong> —
+        entirely in your browser, with no data sent anywhere.
+      </p>
+      <div class="hero-actions">
+        <a href="#classifier" class="btn btn-primary">Try the classifier</a>
+        <a href="#how" class="btn btn-ghost">How it works</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HOW IT WORKS ─────────────────────── -->
+  <section class="how" id="how" aria-labelledby="how-title">
+    <div class="section-inner">
+      <h2 id="how-title">How it works</h2>
+      <ol class="steps" role="list">
+        <li class="step">
+          <div class="step-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </div>
+          <span class="step-num">01</span>
+          <h3>Upload</h3>
+          <p>Pick or drop a photo of your waste item — JPG, PNG, or WEBP.</p>
+        </li>
+        <li class="step">
+          <div class="step-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+            </svg>
+          </div>
+          <span class="step-num">02</span>
+          <h3>Analyze</h3>
+          <p>The trained model reads visual patterns directly in your browser.</p>
+        </li>
+        <li class="step">
+          <div class="step-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <span class="step-num">03</span>
+          <h3>Classify</h3>
+          <p>Get the predicted waste category and confidence score instantly.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ── CLASSIFIER ───────────────────────── -->
+  <section class="classifier-section" id="classifier" aria-labelledby="classifier-title">
+    <div class="section-inner">
+      <h2 id="classifier-title">Identify your waste</h2>
+      <p class="section-sub">Drop an image below and let the AI model do the work.</p>
+
+      <div class="card">
+
+        <!-- Upload -->
+        <div id="upload-zone" class="upload-zone" role="button" tabindex="0"
+             aria-label="Upload a waste image. Click or press Enter to browse.">
+          <div class="upload-icon-bg" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </div>
+          <p class="upload-label">Drop an image here</p>
+          <p class="upload-hint">or click to browse &nbsp;·&nbsp; JPG, PNG, WEBP</p>
+          <label for="file-input" class="btn btn-primary">Choose Image</label>
+          <input type="file" id="file-input"
+                 accept="image/jpeg,image/jpg,image/png,image/webp"
+                 class="sr-only" aria-label="Upload waste image" />
+        </div>
+
+        <!-- Preview -->
+        <div id="preview-section" class="preview-section" hidden>
+          <div class="image-card">
+            <div class="image-placeholder" id="img-placeholder" aria-hidden="true">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                <rect x="3" y="3" width="18" height="18" rx="3"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+              </svg>
+              <span>Image preview</span>
+            </div>
+            <img id="preview-image" src="" alt="Uploaded waste image" hidden />
+            <button id="remove-btn" class="remove-btn" aria-label="Remove image">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <div id="error-msg" class="error-msg" hidden role="alert"></div>
+          <button id="classify-btn" class="btn btn-primary btn-full">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Classify Waste
+          </button>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading-section" class="loading-section" hidden
+             role="status" aria-live="polite">
+          <div class="spinner" aria-hidden="true"></div>
+          <p id="loading-text" class="loading-text">Analyzing image…</p>
+          <p class="loading-sub">Running inference through the trained model</p>
+        </div>
+
+        <!-- Result -->
+        <div id="result-section" class="result-section" hidden aria-live="polite">
+          <div class="result-card">
+            <div class="result-icon-wrap" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+                <path d="M8 12a4 4 0 0 1 8 0"/>
+                <path d="M7 17.5 5 21h5.5"/>
+                <path d="M12 8v4l2.5 1.5"/>
+              </svg>
+            </div>
+            <p class="result-label">Predicted Category</p>
+            <p id="result-class" class="result-class"></p>
+            <p id="result-conf" class="result-conf"></p>
+          </div>
+          <button id="reset-btn" class="btn btn-outline btn-full">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            Try Another Image
+          </button>
+        </div>
+
+        <!-- Global error -->
+        <div id="global-error" class="global-error" hidden role="alert">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <p id="global-error-text"></p>
+        </div>
+
+      </div><!-- /.card -->
+    </div>
+  </section>
+
+  <!-- ── FOOTER ────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="footer-logo">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.2" aria-hidden="true">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+          <path d="M8 12a4 4 0 0 1 8 0"/>
+          <path d="M7 17.5 5 21h5.5"/>
+          <path d="M12 8v4l2.5 1.5"/>
+        </svg>
+        SmartWaste AI
+      </p>
+      <p class="footer-tagline">AI-powered waste classification, right in your browser.</p>
+      <p id="model-status" class="model-status">Loading model…</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.7.4/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

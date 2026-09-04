@@ -1,0 +1,1 @@
+{"tfjsVersion":"1.7.4","tmVersion":"2.4.16","packageVersion":"0.8.4-alpha2","packageName":"@teachablemachine/image","timeStamp":"2026-09-04T17:33:02.749Z","userMetadata":{},"modelName":"Waste_Classification_Model","labels":["Plastic","Paper","Metal"],"imageSize":224}

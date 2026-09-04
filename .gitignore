@@ -1,0 +1,46 @@
+# SmartWaste AI — Git Ignore
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.lnk
+
+# Editor / IDE directories
+.vscode/
+.idea/
+*.code-workspace
+
+# Node.js (if any tooling added later)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn
+
+# Build artifacts
+dist/
+build/
+out/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.bak
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Zip archives (already committed model; no need to double-commit)
+*.zip
+
+# Log files
+*.log
+logs/
+
+# Coverage reports
+coverage/
