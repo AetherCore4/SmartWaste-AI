@@ -202,10 +202,10 @@ The Teachable Machine model uses **MobileNet** as a feature extractor, followed 
 
 ## Author
 
-> **[Your Name Here]**  
+> **Jishan Shaikh**  
 > Machine Learning Model Exploration Project  
-> GitHub: [your-github-username](https://github.com/)  
-> LinkedIn: [your-linkedin-profile](https://linkedin.com/)
+> GitHub: https://github.com/AetherCore4  
+> LinkedIn: https://www.linkedin.com/in/jishan-shaikh-022706330
 
 ---
 
