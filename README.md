@@ -52,20 +52,29 @@ Model/
 
 ## Testing
 
-A separate unseen test dataset (not used during training) was prepared to evaluate the model:
+A separate unseen test dataset was used to evaluate the trained model:
 
-```
 Testing/
 ├── plastic/    ← 10 images
 ├── paper/      ← 10 images
 └── metal/      ← 10 images
-```
 
 10 images per class × 3 classes = **30 total test images**.
 
-> ⚠️ **Accuracy Note**: A claimed accuracy percentage is only meaningful if evaluated on the full unseen test dataset. Do not confuse a single prediction's *confidence score* with overall *model accuracy*. These are different concepts.
+The model was evaluated automatically using `batch_test.js`.
 
-To evaluate the model on the test dataset, use a local HTTP server (see below) and test images through the classifier. Record actual vs predicted class for each image to compute accuracy.
+### Results
+
+| Class | Correct | Total | Accuracy |
+|---|---:|---:|---:|
+| Plastic | 9 | 10 | **90.0%** |
+| Paper | 10 | 10 | **100.0%** |
+| Metal | 10 | 10 | **100.0%** |
+| **Overall** | **29** | **30** | **96.7%** |
+
+The model correctly classified **29 out of 30 unseen test images**, achieving an overall accuracy of **96.7%**.
+
+One Plastic image was incorrectly classified as Metal.
 
 ---
 
@@ -193,8 +202,8 @@ The Teachable Machine model uses **MobileNet** as a feature extractor, followed 
 - Larger and more diverse training datasets with real-world images
 - Data augmentation during training for better generalisation
 - Camera-based live classification (without file upload)
-- Batch image testing tool
-- Formal model evaluation with confusion matrix and per-class accuracy
+- Expand the test dataset for more reliable evaluation
+- Generate a confusion matrix for detailed error analysis
 - Integration with smart recycling bin systems
 - Progressive Web App (PWA) for offline use
 
