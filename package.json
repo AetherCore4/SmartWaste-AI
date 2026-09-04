@@ -1,0 +1,24 @@
+{
+  "name": "waste_classification",
+  "version": "1.0.0",
+  "description": "> **AI-powered waste image classifier — Plastic · Paper · Metal**   > Browser-based inference using TensorFlow.js and Google Teachable Machine.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AetherCore4/SmartWaste-AI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/AetherCore4/SmartWaste-AI/issues"
+  },
+  "homepage": "https://github.com/AetherCore4/SmartWaste-AI#readme",
+  "dependencies": {
+    "puppeteer": "^25.10.0"
+  }
+}
